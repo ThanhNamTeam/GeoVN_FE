@@ -21,4 +21,5 @@ This project leverages several key Flutter packages:
    flutter pub get
 
 2. **Run the application (Web)**
+   ```Terminal
    flutter run -d chrome --web-port 61562
