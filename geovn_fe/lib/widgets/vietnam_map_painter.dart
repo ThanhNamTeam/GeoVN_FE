@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
-
 import '../models/province_model.dart';
 
 class VietnamMapPainter extends CustomPainter {
@@ -17,7 +16,6 @@ class VietnamMapPainter extends CustomPainter {
     this.isDarkMode = true,
   });
 
-
   List<List<List<List<double>>>> _drawPolys(Province p) => p.getCoordinates();
 
   void _expandBoundsForProvince(Province province, void Function(double lng, double lat) onPoint) {
@@ -32,7 +30,6 @@ class VietnamMapPainter extends CustomPainter {
   }
 
   Color _fillColorForProvince(Province p) {
-
     final h = (p.id.hashCode % 360).abs().toDouble();
     if (isDarkMode) {
       return HSLColor.fromAHSL(1, h, 0.4, 0.35).toColor();
@@ -144,21 +141,19 @@ class VietnamMapPainter extends CustomPainter {
 
       final fillPaint = Paint()
         ..style = PaintingStyle.fill
-        ..color = baseColor.withOpacity(opacity);
+        ..color = baseColor.withValues(alpha: opacity);
 
       _drawProvincePath(canvas, province, minLng, maxLat, scale, offsetX, offsetY, fillPaint);
     }
-
 
     for (final province in provinces) {
       final opacity = _layerOpacity(province);
       final isEmphasized = emphasisIds.contains(province.id);
 
-
       final strokePaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = isEmphasized ? 2.0 : 0.5
-        ..color = (isDarkMode ? Colors.white70 : Colors.indigo).withOpacity(isEmphasized ? 1.0 : 0.5 * opacity);
+        ..color = (isDarkMode ? Colors.white70 : Colors.indigo).withValues(alpha: isEmphasized ? 1.0 : 0.5 * opacity);
 
       _drawProvincePath(canvas, province, minLng, maxLat, scale, offsetX, offsetY, strokePaint);
 
@@ -166,7 +161,7 @@ class VietnamMapPainter extends CustomPainter {
         final glowPaint = Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 4.0
-          ..color = neonCyan.withOpacity(0.6)
+          ..color = neonCyan.withValues(alpha: 0.6)
           ..maskFilter = const MaskFilter.blur(BlurStyle.outer, 6);
         _drawProvincePath(canvas, province, minLng, maxLat, scale, offsetX, offsetY, glowPaint);
       }
@@ -180,11 +175,20 @@ class VietnamMapPainter extends CustomPainter {
       final ox = offsetX + (lng - minLng) * scale;
       final oy = offsetY + (maxLat - lat) * scale;
 
+      String rawName = province.name;
+      String displayName = "";
+
+      if (rawName.contains("Thành phố")) {
+        displayName = rawName.replaceAll("Thành phố ", "TP. ");
+      } else {
+        displayName = rawName.replaceAll("Tỉnh ", "");
+      }
+
       final tp = TextPainter(
         text: TextSpan(
-          text: province.name,
+          text: displayName,
           style: GoogleFonts.beVietnamPro(
-            fontSize: 10,
+            fontSize: 7,
             fontWeight: FontWeight.bold,
             color: isDarkMode ? Colors.white : Colors.black87,
             shadows: [
