@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "geovn_fe",
+            "cwd": "geovn_fe",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--web-port",
+                "61562"
+           ]
+        },
+        {
+            "name": "geovn_fe (profile mode)",
+            "cwd": "geovn_fe",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "geovn_fe (release mode)",
+            "cwd": "geovn_fe",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
